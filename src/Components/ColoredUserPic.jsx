@@ -1,41 +1,4 @@
-import styled from "styled-components"
-
-const shouldForwardProp = (prop) => 
-    prop !== 'size' && 
-    prop !== 'colorWidth' && 
-    prop !== 'colors' && 
-    prop !== 'hoverColors' && 
-    prop !== 'backgroundColor' && 
-    prop !== 'margin'; 
-
-
-const OuterWrapper = styled.div.withConfig({ shouldForwardProp })`
-        width: ${props => props.size}px;
-        height: ${props => props.size}px;
-        box-sizing: border-box;
-        border-radius: 50%;
-        padding: ${props => props.colorWidth}px;
-        background: linear-gradient(to right, ${props => props.colors.join(', ')});
-        &:hover {
-            background: linear-gradient(to right, ${props => props.hoverColors.join(', ')});
-        }
-    `;
-
-    const InnerWrapper = styled.div.withConfig({ shouldForwardProp })`
-        width:100%;
-        height: 100%;
-        box-sizing: border-box;
-        padding: ${props => props.margin}px;
-        background-color: ${props => props.backgroundColor};
-        border-radius: 50%;
-    `;
-
-    const StyledImg = styled.img`
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background-size: cover;
-    `;
+import { useState } from "react"
 
 export default function ColoredUserPic(props){
     const {
@@ -48,19 +11,43 @@ export default function ColoredUserPic(props){
         colorWidth
     } = props
 
+    const [onHover, setOnHover] = useState(false)
+
+    const outerWrapperStyle = {
+        width: size,
+        height: size,
+        boxSizing: 'border-box',
+        borderRadius: '50%',
+        padding: colorWidth,
+        background: `linear-gradient(to right, ${onHover ? hoverColors.join(', ') : colors.join(', ')})`,
+        transition: 'background 3s',
+    }
+
+    const innerWrapperStyle = {
+        width:'100%',
+        height: '100%',
+        boxSizing: 'border-box',
+        padding: margin,
+        backgroundColor: backgroundColor,
+        borderRadius: '50%',
+    }
+
+    const imgStyle = {
+        backgroundSize: 'cover',
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+    }
+
     return(
-        <OuterWrapper 
-            size={size} 
-            colors={colors} 
-            hoverColors={hoverColors} 
-            colorWidth={colorWidth}
+        <div 
+            onMouseEnter={() => setOnHover(true)} 
+            onMouseLeave={() => setOnHover(false)} 
+            style={outerWrapperStyle}
         >
-            <InnerWrapper 
-                margin={margin} 
-                backgroundColor={backgroundColor}
-            >
-                <StyledImg src={src}/>
-            </InnerWrapper>
-        </OuterWrapper>
+            <div style={innerWrapperStyle}>
+                <img src={src} alt="avatar" style={imgStyle}/>
+            </div>
+        </div>
     )
 }
