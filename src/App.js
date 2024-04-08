@@ -1,23 +1,19 @@
-import logo from './logo.svg';
+import avatar from './avatar.png';
 import './App.css';
+import ColoredUserPic from './Components/ColoredUserPic';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ColoredUserPic
+        src={avatar}
+        size={150}
+        margin={4}
+        backgroundColor={'red'}
+        colors={['green', 'blue']}
+        hoverColors={['blue', 'green']}
+        colorWidth={6}
+      />
     </div>
   );
 }
